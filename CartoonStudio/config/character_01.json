@@ -1,0 +1,46 @@
+{
+  "asset_id": "C01",
+  "character_id": "C01_maya",
+  "name": "Maya",
+  "master_blend": "assets/characters/C01/C01_MASTER.blend",
+  "collection": "C01_CHARACTER",
+  "armature": "C01_RIG",
+  "status": "blocked_pending_approved_existing_asset",
+  "design": {
+    "style": "original stylized adult female, animated-film inspiration",
+    "eyes": "brown",
+    "hair": "shoulder-length chestnut waves",
+    "shirt": "light blue",
+    "trousers": "blue denim jeans",
+    "shoes": "white sneakers"
+  },
+  "coordinates": {
+    "units": "meters",
+    "up": "+Z",
+    "forward": "-Y",
+    "left": "+X"
+  },
+  "references": [
+    "reference/00_PRIMARY_SOURCE_BOARD.png",
+    "reference/C01_CLEAN_MODELING_SHEET.png",
+    "reference/05_FACE_CLOSEUP.png"
+  ],
+  "actions": [
+    "IDLE",
+    "WALK",
+    "WAVE",
+    "POINT",
+    "TALK",
+    "SURPRISED",
+    "BLINK"
+  ],
+  "preview": {
+    "fps": 24,
+    "animation_frames": 120,
+    "turntable_frames": 72,
+    "device": "CPU"
+  },
+  "preferred_base": "https://studio.blender.org/characters/rain/v3/",
+  "fallback_base": "https://github.com/ostef/Game-Human-Rig",
+  "master_available": false
+}

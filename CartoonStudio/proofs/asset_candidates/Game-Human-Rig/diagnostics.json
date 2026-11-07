@@ -1,0 +1,120 @@
+{
+  "status": "DIAGNOSTIC FALLBACK ONLY - not final C01",
+  "asset": "Game-Human-Rig Female_Prototype",
+  "source_sha256": "4ffb5cf29e8e89f9a948d937b69512bba49849fdfa6a44825912daf396f2af45",
+  "blender_version": "4.3.2",
+  "source_preserved": true,
+  "source_scripts_executed": false,
+  "removed_orphan_drivers": [
+    {
+      "path": "pose.bones[\"MCH-Foot_Lift.L\"].rotation_euler",
+      "index": 0,
+      "reason": "orphan driver targets a bone absent from the source rig"
+    },
+    {
+      "path": "pose.bones[\"MCH-Heel_Lift.L\"].rotation_euler",
+      "index": 0,
+      "reason": "orphan driver targets a bone absent from the source rig"
+    },
+    {
+      "path": "pose.bones[\"DEF_TG-Big_Toe.L\"].constraints[\"Copy Transforms IK\"].influence",
+      "index": 0,
+      "reason": "orphan driver targets a bone absent from the source rig"
+    },
+    {
+      "path": "pose.bones[\"DEF_TG-Big_Toe.L\"].constraints[\"Copy Transforms FK\"].influence",
+      "index": 0,
+      "reason": "orphan driver targets a bone absent from the source rig"
+    }
+  ],
+  "base_vertices": 11664,
+  "base_polygons": 10764,
+  "shape_keys": [],
+  "limitations": [
+    "unclothed base mannequin, not designed C01",
+    "no facial rig or expression shapes",
+    "no hair, T-shirt, jeans or shoes",
+    "walk is existing source animation repeated in place",
+    "renders use original material and reduced-resolution CPU previews",
+    "visible segmented surface breaks in source mannequin mesh; not a finished seamless character"
+  ],
+  "views": [
+    "front.png",
+    "side.png",
+    "back.png",
+    "three_quarter.png"
+  ],
+  "videos": {
+    "turntable.mp4": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 256,
+          "height": 384,
+          "r_frame_rate": "24/1",
+          "duration": "2.000000",
+          "nb_read_frames": "48"
+        }
+      ],
+      "format": {
+        "duration": "2.000000"
+      }
+    },
+    "walk_5s.mp4": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 256,
+          "height": 384,
+          "r_frame_rate": "24/1",
+          "duration": "5.000000",
+          "nb_read_frames": "120"
+        }
+      ],
+      "format": {
+        "duration": "5.000000"
+      }
+    }
+  },
+  "working_copy": "assets/characters/C01/source/Game-Human-Rig.working.blend",
+  "walk_deformation": [
+    {
+      "source_frame": 1,
+      "max_displacement": 0.0,
+      "mean_displacement": 0.0,
+      "moved_vertices_over_0_001": 0
+    },
+    {
+      "source_frame": 9,
+      "max_displacement": 0.27332260919989987,
+      "mean_displacement": 0.13256692145536947,
+      "moved_vertices_over_0_001": 11664
+    },
+    {
+      "source_frame": 18,
+      "max_displacement": 0.7516220958754273,
+      "mean_displacement": 0.27954808593938596,
+      "moved_vertices_over_0_001": 11664
+    },
+    {
+      "source_frame": 26,
+      "max_displacement": 0.5742265617372795,
+      "mean_displacement": 0.2060758918489967,
+      "moved_vertices_over_0_001": 11664
+    }
+  ],
+  "remaining_invalid_drivers": [],
+  "working_copy_active_action": "Human_Walk",
+  "source_topology": {
+    "connected_components": 54,
+    "boundary_edges": 1802,
+    "nonmanifold_edges": 1802,
+    "custom_split_normals": true,
+    "freestyle_enabled": false
+  },
+  "visible_band_diagnosis": "Source geometry contains segmented components/open boundaries; Freestyle off and clearing custom normals in an unsaved diagnostic render retained the same bands."
+}

@@ -1,0 +1,224 @@
+{
+  "status": "passed",
+  "validated_at_utc": "2026-11-07T01:58:42.177442+00:00",
+  "blender_version": "4.3.2",
+  "master": "assets/characters/C01/C01_MASTER.blend",
+  "master_sha256": "ce4834982e4361f36c6c7dee24b2a2b1aa3f5cb3fef4a28f657a7fb628810740",
+  "bones": 40,
+  "geometry": {
+    "mesh_objects": 159,
+    "base_vertices": 116972,
+    "base_faces": 114426,
+    "all_vertices_have_normalized_bone_weights": true
+  },
+  "joint_deformation": [
+    {
+      "bone": "forearm.L",
+      "angle_radians": 0.55,
+      "max_vertex_displacement_m": 0.19259946715257242
+    },
+    {
+      "bone": "thigh.L",
+      "angle_radians": 0.55,
+      "max_vertex_displacement_m": 0.49309674531797687
+    }
+  ],
+  "facial_deformation": [
+    {
+      "control": "Blink",
+      "mesh": "C01_Upper_Eyelid_L",
+      "max_vertex_displacement_m": 0.04422318997718947
+    },
+    {
+      "control": "Smile",
+      "mesh": "C01_Mouth_Cavity",
+      "max_vertex_displacement_m": 0.01056213249570535
+    },
+    {
+      "control": "MouthOpen",
+      "mesh": "C01_Lower_Lip",
+      "max_vertex_displacement_m": 0.014918327544920203
+    },
+    {
+      "control": "Surprise",
+      "mesh": "C01_Brow_L",
+      "max_vertex_displacement_m": 0.02300035962140786
+    },
+    {
+      "control": "Sad",
+      "mesh": "C01_Brow_L",
+      "max_vertex_displacement_m": 0.019000053190355682
+    },
+    {
+      "control": "Angry",
+      "mesh": "C01_Brow_L",
+      "max_vertex_displacement_m": 0.016000151864696423
+    },
+    {
+      "control": "Viseme_AA",
+      "mesh": "C01_Lower_Lip",
+      "max_vertex_displacement_m": 0.014918327544920203
+    },
+    {
+      "control": "Viseme_EE",
+      "mesh": "C01_Mouth_Cavity",
+      "max_vertex_displacement_m": 0.01783210441177679
+    },
+    {
+      "control": "Viseme_OO",
+      "mesh": "C01_Mouth_Cavity",
+      "max_vertex_displacement_m": 0.031574769883969664
+    }
+  ],
+  "reusable_actions": [
+    {
+      "action": "IDLE",
+      "keyframes": 2236,
+      "sampled_frames": [
+        1,
+        13,
+        25,
+        37,
+        49
+      ],
+      "max_sampled_vertex_displacement_m": 0.0056696765851907615
+    },
+    {
+      "action": "WALK",
+      "keyframes": 2236,
+      "sampled_frames": [
+        1,
+        7,
+        13,
+        19,
+        25
+      ],
+      "max_sampled_vertex_displacement_m": 0.31464183471232193
+    },
+    {
+      "action": "WAVE",
+      "keyframes": 4300,
+      "sampled_frames": [
+        1,
+        13,
+        25,
+        37,
+        49
+      ],
+      "max_sampled_vertex_displacement_m": 0.7993274214913335
+    },
+    {
+      "action": "POINT",
+      "keyframes": 2236,
+      "sampled_frames": [
+        1,
+        13,
+        25,
+        37,
+        49
+      ],
+      "max_sampled_vertex_displacement_m": 0.1103817170117248
+    },
+    {
+      "action": "TALK",
+      "keyframes": 4300,
+      "sampled_frames": [
+        1,
+        13,
+        25,
+        37,
+        49
+      ],
+      "max_sampled_vertex_displacement_m": 0.04392178289658414
+    },
+    {
+      "action": "SURPRISED",
+      "keyframes": 2236,
+      "sampled_frames": [
+        1,
+        7,
+        13,
+        19,
+        25
+      ],
+      "max_sampled_vertex_displacement_m": 0.1224893834266165
+    },
+    {
+      "action": "BLINK",
+      "keyframes": 1548,
+      "sampled_frames": [
+        1,
+        3,
+        5,
+        7,
+        9
+      ],
+      "max_sampled_vertex_displacement_m": 0.04392167422535576
+    }
+  ],
+  "linked_reuse": {
+    "shot": "episodes/EP001/shots/C01_LINK_TEST.blend",
+    "source": "assets/characters/C01/C01_MASTER.blend",
+    "library_path": "//../../../assets/characters/C01/C01_MASTER.blend",
+    "collection_override": true,
+    "rig_override": true,
+    "independent_local_action": "EP001_C01_INDEPENDENT_WAVE",
+    "sampled_frames": [
+      1,
+      13,
+      25,
+      37,
+      49
+    ],
+    "max_sampled_vertex_displacement_m": 0.12513707419985587,
+    "facial_driver_targets_remapped": 243,
+    "facial_deformation": [
+      {
+        "control": "Blink",
+        "mesh": "C01_Upper_Eyelid_L",
+        "max_vertex_displacement_m": 0.04422318997718947
+      },
+      {
+        "control": "Smile",
+        "mesh": "C01_Mouth_Cavity",
+        "max_vertex_displacement_m": 0.01056213249570535
+      },
+      {
+        "control": "MouthOpen",
+        "mesh": "C01_Lower_Lip",
+        "max_vertex_displacement_m": 0.014918327544920203
+      },
+      {
+        "control": "Surprise",
+        "mesh": "C01_Brow_L",
+        "max_vertex_displacement_m": 0.02300035962140786
+      },
+      {
+        "control": "Sad",
+        "mesh": "C01_Brow_L",
+        "max_vertex_displacement_m": 0.019000053190355682
+      },
+      {
+        "control": "Angry",
+        "mesh": "C01_Brow_L",
+        "max_vertex_displacement_m": 0.016000151864696423
+      },
+      {
+        "control": "Viseme_AA",
+        "mesh": "C01_Lower_Lip",
+        "max_vertex_displacement_m": 0.014918327544920203
+      },
+      {
+        "control": "Viseme_EE",
+        "mesh": "C01_Mouth_Cavity",
+        "max_vertex_displacement_m": 0.01783210441177679
+      },
+      {
+        "control": "Viseme_OO",
+        "mesh": "C01_Mouth_Cavity",
+        "max_vertex_displacement_m": 0.031574769883969664
+      }
+    ]
+  },
+  "master_unchanged_after_validation": true
+}

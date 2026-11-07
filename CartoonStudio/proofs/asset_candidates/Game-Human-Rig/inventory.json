@@ -1,0 +1,542 @@
+{
+  "asset_name": "Game-Human-Rig.original.blend",
+  "size_bytes": 8369132,
+  "sha256": "4ffb5cf29e8e89f9a948d937b69512bba49849fdfa6a44825912daf396f2af45",
+  "opened_with_blender": "4.3.2",
+  "saved_version": [
+    3,
+    6,
+    11
+  ],
+  "embedded_scripts_executed": false,
+  "objects": [
+    {
+      "name": "Camera",
+      "type": "CAMERA"
+    },
+    {
+      "name": "CTRL-Rig",
+      "type": "ARMATURE",
+      "bones": [
+        "CTRL-Root",
+        "CTRL-Torso",
+        "MCH-Spine.02",
+        "CTRL-Spine.02",
+        "MCH-Spine.03",
+        "CTRL-Spine.03",
+        "CTRL-Shoulder.L",
+        "CTRL-Upper_Arm_FK.L",
+        "CTRL-Fore_Arm_FK.L",
+        "CTRL-Hand_FK.L",
+        "MCH-Upper_Arm_IK.L",
+        "MCH-Fore_Arm_IK.L",
+        "MCH-Hand_IK.L",
+        "MCH-Neck",
+        "CTRL-Neck",
+        "MCH-Head",
+        "CTRL-Head",
+        "CTRL-Shoulder.R",
+        "CTRL-Upper_Arm_FK.R",
+        "CTRL-Fore_Arm_FK.R",
+        "CTRL-Hand_FK.R",
+        "MCH-Upper_Arm_IK.R",
+        "MCH-Fore_Arm_IK.R",
+        "MCH-Hand_IK.R",
+        "MCH-Spine.01",
+        "CTRL-Spine.01",
+        "DEF_TG.Spine.01",
+        "MCH-Hips",
+        "CTRL-Hips",
+        "DEF_TG-Thigh.L",
+        "DEF_TG-Shin.L",
+        "DEF_TG-Foot.L",
+        "DEF_TG-Toes.L",
+        "CTRL-Leg_Params.L",
+        "DEF_TG-Hips",
+        "MCH-Thigh_IK.L",
+        "MCH-Shin_IK.L",
+        "MCH-Foot_IK.L",
+        "MCH-Toes_IK.L",
+        "CTRL-Thigh_FK.L",
+        "CTRL-Shin_FK.L",
+        "CTRL-Foot_FK.L",
+        "CTRL-Toes_FK.L",
+        "DEF_TG-Thigh.R",
+        "DEF_TG-Shin.R",
+        "DEF_TG-Foot.R",
+        "DEF_TG-Toes.R",
+        "CTRL-Leg_Params.R",
+        "MCH-Thigh_IK.R",
+        "MCH-Shin_IK.R",
+        "MCH-Foot_IK.R",
+        "MCH-Toes_IK.R",
+        "CTRL-Thigh_FK.R",
+        "CTRL-Shin_FK.R",
+        "CTRL-Foot_FK.R",
+        "CTRL-Toes_FK.R",
+        "CTRL-Lower_Torso",
+        "CTRL-Upper_Torso",
+        "CTRL-Hand_IK_Target.L",
+        "CTRL-Hand_IK_Target.R",
+        "CTRL-Leg_IK_Pole.L",
+        "CTRL-Leg_IK.L",
+        "MCH-Foot_IK_Lift.L",
+        "MCH-Foot_IK_Roll.L",
+        "MCH-Leg_IK_Target.L",
+        "MCH-Foot_Roll_Pole.L",
+        "MCH-Foot_Roll_Target.L",
+        "CTRL-Toes_IK.L",
+        "CTRL-Foot_Roll.L",
+        "CTRL-Leg_IK_Pole.R",
+        "CTRL-Leg_IK.R",
+        "MCH-Foot_IK_Lift.R",
+        "MCH-Foot_IK_Roll.R",
+        "MCH-Leg_IK_Target.R",
+        "MCH-Foot_Roll_Pole.R",
+        "MCH-Foot_Roll_Target.R",
+        "CTRL-Toes_IK.R",
+        "CTRL-Foot_Roll.R",
+        "DEF_TG-Upper_Arm.L",
+        "CTRL-Arm_Params.L",
+        "DEF_TG.Fore_Arm.L",
+        "DEF_TG.Hand.L",
+        "CTRL-Finger_Pinky.L",
+        "DEF_TG-Finger_Pinky.01.L",
+        "DEF_TG-Finger_Pinky.02.L",
+        "DEF_TG-Finger_Pinky.03.L",
+        "CTRL-Finger_Ring.L",
+        "DEF_TG-Finger_Ring.01.L",
+        "DEF_TG-Finger_Ring.02.L",
+        "DEF_TG-Finger_Ring.03.L",
+        "CTRL-Finger_Middle.L",
+        "DEF_TG-Finger_Middle.01.L",
+        "DEF_TG-Finger_Middle.02.L",
+        "DEF_TG-Finger_Middle.03.L",
+        "CTRL-Finger_Index.L",
+        "DEF_TG-Finger_Index.01.L",
+        "DEF_TG-Finger_Index.02.L",
+        "DEF_TG-Finger_Index.03.L",
+        "CTRL-Finger_Thumb.L",
+        "DEF_TG-Finger_Thumb.01.L",
+        "DEF_TG-Finger_Thumb.02.L",
+        "CTRL-Finger_Thumb.03.L",
+        "CTRL-Hand_IK_Pole.L",
+        "DEF_TG-Upper_Arm.R",
+        "CTRL-Arm_Params.R",
+        "DEF_TG.Fore_Arm.R",
+        "DEF_TG.Hand.R",
+        "CTRL-Finger_Pinky.R",
+        "DEF_TG-Finger_Pinky.01.R",
+        "DEF_TG-Finger_Pinky.02.R",
+        "DEF_TG-Finger_Pinky.03.R",
+        "CTRL-Finger_Ring.R",
+        "DEF_TG-Finger_Ring.01.R",
+        "DEF_TG-Finger_Ring.02.R",
+        "DEF_TG-Finger_Ring.03.R",
+        "CTRL-Finger_Middle.R",
+        "DEF_TG-Finger_Middle.01.R",
+        "DEF_TG-Finger_Middle.02.R",
+        "DEF_TG-Finger_Middle.03.R",
+        "CTRL-Finger_Index.R",
+        "DEF_TG-Finger_Index.01.R",
+        "DEF_TG-Finger_Index.02.R",
+        "DEF_TG-Finger_Index.03.R",
+        "CTRL-Finger_Thumb.R",
+        "DEF_TG-Finger_Thumb.01.R",
+        "DEF_TG-Finger_Thumb.02.R",
+        "CTRL-Finger_Thumb.03.R",
+        "CTRL-Hand_IK_Pole.R"
+      ],
+      "custom_controls": [],
+      "assigned_action": "Human_Sprint"
+    },
+    {
+      "name": "DEF-Rig",
+      "type": "ARMATURE",
+      "bones": [
+        "DEF-Root",
+        "DEF-Hips",
+        "DEF-Spine.01",
+        "DEF-Spine.02",
+        "DEF-Spine.03",
+        "DEF-Neck",
+        "DEF-Head",
+        "DEF-Shoulder.L",
+        "DEF-Upper_Arm.L",
+        "DEF-Fore_Arm.L",
+        "DEF-Hand.L",
+        "DEF-Finger_Thumb.01.L",
+        "DEF-Finger_Thumb.02.L",
+        "DEF-Finger_Thumb.03.L",
+        "DEF-Finger_Middle.01.L",
+        "DEF-Finger_Middle.02.L",
+        "DEF-Finger_Middle.03.L",
+        "DEF-Finger_Ring.01.L",
+        "DEF-Finger_Ring.02.L",
+        "DEF-Finger_Ring.03.L",
+        "DEF-Finger_Pinky.01.L",
+        "DEF-Finger_Pinky.02.L",
+        "DEF-Finger_Pinky.03.L",
+        "DEF-Finger_Index.01.L",
+        "DEF-Finger_Index.02.L",
+        "DEF-Finger_Index.03.L",
+        "DEF-Shoulder.R",
+        "DEF-Upper_Arm.R",
+        "DEF-Fore_Arm.R",
+        "DEF-Hand.R",
+        "DEF-Finger_Thumb.01.R",
+        "DEF-Finger_Thumb.02.R",
+        "DEF-Finger_Thumb.03.R",
+        "DEF-Finger_Middle.01.R",
+        "DEF-Finger_Middle.02.R",
+        "DEF-Finger_Middle.03.R",
+        "DEF-Finger_Ring.01.R",
+        "DEF-Finger_Ring.02.R",
+        "DEF-Finger_Ring.03.R",
+        "DEF-Finger_Pinky.01.R",
+        "DEF-Finger_Pinky.02.R",
+        "DEF-Finger_Pinky.03.R",
+        "DEF-Finger_Index.01.R",
+        "DEF-Finger_Index.02.R",
+        "DEF-Finger_Index.03.R",
+        "DEF-Thigh.L",
+        "DEF-Shin.L",
+        "DEF-Foot.L",
+        "DEF-Toes.L",
+        "DEF-Thigh.R",
+        "DEF-Shin.R",
+        "DEF-Foot.R",
+        "DEF-Toes.R"
+      ],
+      "custom_controls": []
+    },
+    {
+      "name": "Female_Prototype",
+      "type": "MESH",
+      "vertices": 11664,
+      "faces": 10764,
+      "shape_keys": [],
+      "armature_targets": [
+        "DEF-Rig"
+      ],
+      "material_slots": [
+        "Material.002"
+      ],
+      "assigned_action": "Sample_Run_Pose"
+    },
+    {
+      "name": "Light",
+      "type": "LIGHT"
+    },
+    {
+      "name": "Male_Prototype",
+      "type": "MESH",
+      "vertices": 11662,
+      "faces": 10762,
+      "shape_keys": [],
+      "armature_targets": [
+        "DEF-Rig"
+      ],
+      "material_slots": [
+        "Material.002"
+      ],
+      "assigned_action": "Sample_Run_Pose_Inversed"
+    },
+    {
+      "name": "WGT-Calf_FK",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Finger",
+      "type": "MESH",
+      "vertices": 33,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Foot_FK",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Foot_Roll",
+      "type": "MESH",
+      "vertices": 228,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Fore_Arm_FK",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Hand_FK",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Hand_IK",
+      "type": "MESH",
+      "vertices": 56,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Head",
+      "type": "MESH",
+      "vertices": 8,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Hips",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Leg_IK",
+      "type": "MESH",
+      "vertices": 56,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Lower_Torso",
+      "type": "MESH",
+      "vertices": 64,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Neck",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Params",
+      "type": "MESH",
+      "vertices": 48,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Pole_Target",
+      "type": "MESH",
+      "vertices": 96,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Root",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Shoulder",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Spine.01",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Spine.02",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Spine.03",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Thigh_FK",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Thumb",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Toes",
+      "type": "MESH",
+      "vertices": 8,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Torso",
+      "type": "MESH",
+      "vertices": 8,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Upper_Arm_FK",
+      "type": "MESH",
+      "vertices": 32,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    },
+    {
+      "name": "WGT-Upper_Torso",
+      "type": "MESH",
+      "vertices": 8,
+      "faces": 0,
+      "shape_keys": [],
+      "armature_targets": [],
+      "material_slots": []
+    }
+  ],
+  "actions": [
+    {
+      "name": "Human_Breathing_Additive",
+      "frame_range": [
+        1.0,
+        200.0
+      ],
+      "fcurves": 520
+    },
+    {
+      "name": "Human_Idle_Pose",
+      "frame_range": [
+        0.0,
+        1.0
+      ],
+      "fcurves": 520
+    },
+    {
+      "name": "Human_Jog",
+      "frame_range": [
+        1.0,
+        26.0
+      ],
+      "fcurves": 400
+    },
+    {
+      "name": "Human_Run",
+      "frame_range": [
+        1.0,
+        20.0
+      ],
+      "fcurves": 400
+    },
+    {
+      "name": "Human_Sprint",
+      "frame_range": [
+        1.0,
+        18.0
+      ],
+      "fcurves": 400
+    },
+    {
+      "name": "Human_Walk",
+      "frame_range": [
+        1.0,
+        34.0
+      ],
+      "fcurves": 400
+    },
+    {
+      "name": "Sample_Run_Pose",
+      "frame_range": [
+        0.0,
+        1.0
+      ],
+      "fcurves": 520
+    },
+    {
+      "name": "Sample_Run_Pose_Inversed",
+      "frame_range": [
+        1.0,
+        1.0
+      ],
+      "fcurves": 520
+    }
+  ],
+  "image_dependencies": [],
+  "linked_libraries": [],
+  "embedded_text_blocks": [],
+  "source_unchanged": true,
+  "scope": "Inventory only. A working rig requires evaluated deformation tests and rendered review."
+}

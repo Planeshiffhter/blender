@@ -1,0 +1,10 @@
+{
+  "resolution_x": 1920,
+  "resolution_y": 1080,
+  "resolution_percentage": 100,
+  "fps": 24,
+  "engine": "CYCLES",
+  "samples": 32,
+  "image_format": "PNG",
+  "color_mode": "RGBA"
+}

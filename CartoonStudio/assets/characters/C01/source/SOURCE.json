@@ -1,0 +1,16 @@
+{
+  "preferred_asset": {
+    "name": "Rain v3",
+    "url": "https://studio.blender.org/characters/rain/v3/",
+    "downloaded": false,
+    "blocker": "studio.blender.org denied by current cloud network policy; destination addition saved in configuration draft"
+  },
+  "fallback": {
+    "url": "https://github.com/ostef/Game-Human-Rig",
+    "commit": "483f7ee62c79849f62b60770d4743e37ce48af09",
+    "original_file": "Game-Human-Rig.original.blend",
+    "sha256": "4ffb5cf29e8e89f9a948d937b69512bba49849fdfa6a44825912daf396f2af45",
+    "license_file": "Game-Human-Rig.LICENSE",
+    "role": "body-rig candidate evaluation, not a completed or approved Character 01"
+  }
+}
