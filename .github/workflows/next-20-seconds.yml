@@ -1,0 +1,59 @@
+name: Generate next 20-second conversation audio
+on:
+  push:
+    paths:
+      - 'CartoonStudio/episodes/a_second_taj/next_20_seconds/**'
+      - '.github/workflows/next-20-seconds.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  kokoro_audio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: CartoonStudio/episodes/a_second_taj/requirements.txt
+
+      - name: Install the same Kokoro audio dependencies
+        run: python -m pip install -r CartoonStudio/episodes/a_second_taj/requirements.txt
+
+      - name: Create the new 20-second episode audio
+        run: python CartoonStudio/episodes/a_second_taj/next_20_seconds/make_audio.py
+
+      - name: Verify audio and subtitle timing
+        run: python CartoonStudio/episodes/a_second_taj/next_20_seconds/verify_audio.py
+
+      - name: Upload downloadable audio artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: A-Second-Taj-Episode-2-Audio
+          path: |
+            CartoonStudio/episodes/a_second_taj/next_20_seconds/audio/Conversation.wav
+            CartoonStudio/episodes/a_second_taj/next_20_seconds/audio/timing.json
+            CartoonStudio/episodes/a_second_taj/next_20_seconds/English.srt
+          if-no-files-found: error
+
+      - name: Commit generated audio to the repository
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CartoonStudio/episodes/a_second_taj/next_20_seconds/audio/Conversation.wav
+          git add CartoonStudio/episodes/a_second_taj/next_20_seconds/audio/timing.json
+          git add CartoonStudio/episodes/a_second_taj/next_20_seconds/English.srt
+          if git diff --cached --quiet; then
+            echo "Generated files already up to date."
+          else
+            git commit -m "Generate episode 2 twenty-second Kokoro audio"
+            git push origin HEAD:main
+          fi
