@@ -1,0 +1,37 @@
+name: Check A Second Taj
+on:
+  push:
+    paths:
+      - 'CartoonStudio/episodes/a_second_taj/**'
+      - '.github/workflows/a-second-taj.yml'
+  pull_request:
+    paths:
+      - 'CartoonStudio/episodes/a_second_taj/**'
+      - '.github/workflows/a-second-taj.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: taj-check-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: CartoonStudio/episodes/a_second_taj
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check scripts, dialogue and packed assets
+        run: |
+          python -m compileall -q .
+          python verify_handoff.py
+      - name: Check the movie duration and both streams
+        run: |
+          command -v ffprobe || (sudo apt-get update -qq && sudo apt-get install -y ffmpeg)
+          ffprobe -v error -show_streams -show_format -of json final/A_Second_Taj.mp4 > /tmp/taj-media.json
+          python -c "import json; p=json.load(open('/tmp/taj-media.json')); assert abs(float(p['format']['duration'])-20)<0.05; assert {s['codec_type'] for s in p['streams']} >= {'video','audio'}"
