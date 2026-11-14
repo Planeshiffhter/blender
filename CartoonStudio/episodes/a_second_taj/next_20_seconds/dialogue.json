@@ -1,0 +1,44 @@
+[
+  {
+    "speaker": "Tara",
+    "voice": "af_heart",
+    "language": "en-us",
+    "speed": 0.95,
+    "text": "Did the photo catch the reflection?"
+  },
+  {
+    "speaker": "Maya",
+    "voice": "bf_emma",
+    "language": "en-gb",
+    "speed": 0.94,
+    "text": "Yes! It looks like a palace in the sky."
+  },
+  {
+    "speaker": "Tara",
+    "voice": "af_heart",
+    "language": "en-us",
+    "speed": 0.95,
+    "text": "Imagine living in that upside-down world!"
+  },
+  {
+    "speaker": "Maya",
+    "voice": "bf_emma",
+    "language": "en-gb",
+    "speed": 0.94,
+    "text": "I'd need a ladder just to reach my door."
+  },
+  {
+    "speaker": "Tara",
+    "voice": "af_heart",
+    "language": "en-us",
+    "speed": 0.95,
+    "text": "And a bicycle that can fly."
+  },
+  {
+    "speaker": "Maya",
+    "voice": "bf_emma",
+    "language": "en-gb",
+    "speed": 0.94,
+    "text": "Ha! Come closer. One more picture, ready?"
+  }
+]
