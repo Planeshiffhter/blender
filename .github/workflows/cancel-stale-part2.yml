@@ -1,0 +1,27 @@
+name: Cancel superseded Part 2 renders to save GitHub runner minutes
+on:
+  push:
+    branches:
+      - fix/40s-genuine-animation-review
+    paths:
+      - '.github/workflows/cancel-stale-part2.yml'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  cancel_obsolete:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Cancel pre-fix rendered jobs which would discard their MP4s on false sync failures
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          for id in 43645176441 43645191416 43645414357; do
+            echo "Cancelling obsolete Part 2 render run $id"
+            gh run cancel "$id" --repo "$GITHUB_REPOSITORY" || true
+          done
+          echo "The latest fixed Part 2 render is intentionally not cancelled."
