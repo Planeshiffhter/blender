@@ -45,6 +45,9 @@ jobs:
           mkdir -p taj-blender-4.3.2
           tar -xJf "$archive" --strip-components=1 -C taj-blender-4.3.2
 
+      - name: Verify AAC encoding maintains Kokoro dialogue alignment before Blender rendering
+        run: python3 CartoonStudio/episodes/a_second_taj/extension_review/diagnose_audio.py
+
       - name: Prepare a real 20-second 3D scene with new audio and character acting
         working-directory: CartoonStudio/episodes/a_second_taj
         shell: bash
@@ -111,11 +114,7 @@ jobs:
           # Subtitle filter looks in the frame rendering folder
           AV_LOG_FORCE_NOCOLOR: '1'
 
-      - name: Verify media length and dialogue synchronization
-        working-directory: CartoonStudio/episodes/a_second_taj
-        run: python3 extension_review/verify_part2.py
-
-      - name: Upload review MP4 and source scene
+      - name: Upload encoded MP4 and Blender scene BEFORE verification (preserve failed render for debugging)
         uses: actions/upload-artifact@v4
         with:
           name: Part2-ONLY-20-Second-Animated-Clip
@@ -125,6 +124,10 @@ jobs:
             CartoonStudio/episodes/a_second_taj/extension_review/shots_part2.json
           if-no-files-found: error
           retention-days: 30
+
+      - name: Verify media length and dialogue synchronization
+        working-directory: CartoonStudio/episodes/a_second_taj
+        run: python3 extension_review/verify_part2.py
 
       - name: Push review video only to the PR branch (never main)
         if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'

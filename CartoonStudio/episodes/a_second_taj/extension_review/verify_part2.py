@@ -28,17 +28,22 @@ def corr(reference, movie, line):
     indices = range(round(line["start"]*RATE),round(line["end"]*RATE),8)
     xs = [reference[i] for i in indices]
     energy = sum(x*x for x in xs)
-    best = 0
-    for shift in range(-RATE//24,RATE//24+1,4):
+    best, best_shift = 0.0, 0
+    # Search every sample offset, including EXACT ZERO (the old step-of-4 grid
+    # skipped zero and falsely rejected correctly aligned high-pitched voices).
+    margin = round(RATE / 24)
+    for shift in range(-margin, margin + 1):
         if indices[0]+shift<0 or indices[-1]+shift >= len(movie):
             continue
         ys = [movie[i+shift] for i in indices]
         den = math.sqrt(energy*sum(y*y for y in ys))
         if den:
-            best = max(best,sum(x*y for x,y in zip(xs,ys))/den)
+            score = sum(x*y for x,y in zip(xs,ys))/den
+            if score > best:
+                best, best_shift = score, shift
     if best<.80:
         raise AssertionError(f"Voice not in sync: {line['speaker']} {line['start']}s correlation={best:.2f}")
-    print(f"OK voice: {line['speaker']} {line['start']:.2f}s correlation {best:.3f}")
+    print(f"OK voice: {line['speaker']} {line['start']:.2f}s correlation {best:.4f}, lag {1000 * best_shift / RATE:.2f} ms")
 
 
 def main():
