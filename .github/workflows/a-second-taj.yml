@@ -1,6 +1,7 @@
 name: Check A Second Taj
 on:
   push:
+    branches: [main]
     paths:
       - 'CartoonStudio/episodes/a_second_taj/**'
       - '.github/workflows/a-second-taj.yml'
@@ -39,5 +40,52 @@ jobs:
         with:
           name: original-taj-camera-review
           path: ${{ runner.temp }}/taj-review/
+          if-no-files-found: error
+          retention-days: 7
+
+  camera-review:
+    name: Compare Blender cameras with the finished film
+    needs: validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: CartoonStudio/episodes/a_second_taj
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install image and video tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg python3-pil fonts-dejavu-core
+      - name: Restore Blender 4.3.2
+        id: blender-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/taj-blender-4.3.2
+          key: taj-blender-4.3.2-linux-x64-v1
+      - name: Download and verify Blender
+        if: steps.blender-cache.outputs.cache-hit != 'true'
+        working-directory: ${{ runner.temp }}
+        run: |
+          release=https://download.blender.org/release/Blender4.3
+          archive=blender-4.3.2-linux-x64.tar.xz
+          curl --fail --location --retry 3 -o "$archive" "$release/$archive"
+          curl --fail --location --retry 3 -o blender.sha256 "$release/blender-4.3.2.sha256"
+          awk -v file="$archive" '$2 == file || $2 == "*"file' blender.sha256 > archive.sha256
+          sha256sum --check archive.sha256
+          mkdir -p taj-blender-4.3.2
+          tar -xJf "$archive" --strip-components=1 -C taj-blender-4.3.2
+      - name: Render one preview per camera and pair with the published frames
+        run: |
+          "$RUNNER_TEMP/taj-blender-4.3.2/blender" --background --disable-autoexec A_Second_Taj.blend \
+            --threads 4 --python-exit-code 1 --python review_scene.py -- "$RUNNER_TEMP/taj-cameras"
+          /usr/bin/python3 compare_shots.py "$RUNNER_TEMP/taj-cameras"
+      - name: Upload visual comparison
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-taj-blender-cameras
+          path: |
+            ${{ runner.temp }}/taj-cameras/camera-comparison.jpg
+            ${{ runner.temp }}/taj-cameras/shots.json
           if-no-files-found: error
           retention-days: 7
