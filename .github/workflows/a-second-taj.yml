@@ -30,8 +30,14 @@ jobs:
         run: |
           python -m compileall -q .
           python verify_handoff.py
-      - name: Check the movie duration and both streams
+      - name: Verify original film, dialogue sync and captions
         run: |
-          command -v ffprobe || (sudo apt-get update -qq && sudo apt-get install -y ffmpeg)
-          ffprobe -v error -show_streams -show_format -of json final/A_Second_Taj.mp4 > /tmp/taj-media.json
-          python -c "import json; p=json.load(open('/tmp/taj-media.json')); assert abs(float(p['format']['duration'])-20)<0.05; assert {s['codec_type'] for s in p['streams']} >= {'video','audio'}"
+          command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null || (sudo apt-get update -qq && sudo apt-get install -y ffmpeg)
+          python verify_export.py "$RUNNER_TEMP/taj-review"
+      - name: Upload camera frames, speaker list and captions for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-taj-camera-review
+          path: ${{ runner.temp }}/taj-review/
+          if-no-files-found: error
+          retention-days: 7
