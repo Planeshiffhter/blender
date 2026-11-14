@@ -20,9 +20,11 @@ jobs:
       - name: Checkout source and existing original MP4
         uses: actions/checkout@v4
 
-      - name: Check FFmpeg capabilities
+      - name: Install FFmpeg with libass and x264
         shell: bash
         run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ffmpeg
           ffmpeg -version | head -n 3
           ffmpeg -hide_banner -filters | grep subtitles
           ffmpeg -hide_banner -encoders | grep libx264
