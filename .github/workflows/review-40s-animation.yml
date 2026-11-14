@@ -1,0 +1,30 @@
+name: Review-only 40s animation preflight
+on:
+  pull_request:
+    paths:
+      - 'CartoonStudio/episodes/a_second_taj/extension_review/**'
+      - 'CartoonStudio/episodes/a_second_taj/next_20_seconds/audio/**'
+      - '.github/workflows/review-40s-animation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static_audio_and_source_checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check Python syntax without requiring Blender at checkout
+        run: python -m py_compile CartoonStudio/episodes/a_second_taj/extension_review/extend_blender.py CartoonStudio/episodes/a_second_taj/extension_review/verify_sources.py
+      - name: Validate original assets and upgraded 20-second WAV
+        run: python CartoonStudio/episodes/a_second_taj/extension_review/verify_sources.py
+      - name: Require a human video review before release
+        run: |
+          echo "Source and audio are validated only."
+          echo "No recycled footage or unreviewed MP4 is published by this workflow."
+          echo "Draft PR remains subject to Blender render and visual approval."
