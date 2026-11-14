@@ -1,0 +1,141 @@
+name: Render real Blender Part 2 clip (story seconds 20-40 ONLY)
+on:
+  pull_request:
+    paths:
+      - 'CartoonStudio/episodes/a_second_taj/extension_review/make_part2.py'
+      - 'CartoonStudio/episodes/a_second_taj/extension_review/render_part2.py'
+      - 'CartoonStudio/episodes/a_second_taj/extension_review/verify_part2.py'
+      - '.github/workflows/render-part2-20s.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render_part2_only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: {{ github.head_ref || github.ref_name }}
+          fetch-depth: 1
+      - name: Install FFmpeg, image tools, fonts
+        shell: bash
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg fonts-dejavu-core
+      - name: Use cached Blender 4.3.2
+        id: blender-cache
+        uses: actions/cache@v4
+        with:
+          path: {{ runner.temp }}/taj-blender-4.3.2
+          key: taj-blender-4.3.2-linux-x64-v1
+      - name: Download checksum-verified Blender if uncached
+        if: steps.blender-cache.outputs.cache-hit != 'true'
+        working-directory: {{ runner.temp }}
+        shell: bash
+        run: |
+          release=https://download.blender.org/release/Blender4.3
+          archive=blender-4.3.2-linux-x64.tar.xz
+          curl --fail --location --retry 3 -o "$archive" "$release/$archive"
+          curl --fail --location --retry 3 -o blender.sha256 "$release/blender-4.3.2.sha256"
+          awk -v file="$archive" '$2 == file || $2 == "*"file' blender.sha256 > archive.sha256
+          sha256sum --check archive.sha256
+          mkdir -p taj-blender-4.3.2
+          tar -xJf "$archive" --strip-components=1 -C taj-blender-4.3.2
+
+      - name: Prepare a real 20-second 3D scene with new audio and character acting
+        working-directory: CartoonStudio/episodes/a_second_taj
+        shell: bash
+        run: |
+          "$RUNNER_TEMP/taj-blender-4.3.2/blender" --background --disable-autoexec A_Second_Taj.blend \
+            --threads 4 --python-exit-code 1 --python extension_review/make_part2.py
+
+      - name: Render six real Blender preview frames at speaker midpoints
+        working-directory: CartoonStudio/episodes/a_second_taj
+        shell: bash
+        run: |
+          "$RUNNER_TEMP/taj-blender-4.3.2/blender" --background --disable-autoexec extension_review/A_Second_Taj_Part2_20_to_40.blend \
+            --threads 4 --python-exit-code 1 --python extension_review/render_part2.py -- \
+            --mode preview --output "$RUNNER_TEMP/part2-preview"
+          ffmpeg -hide_banner -loglevel error -y -framerate 1 \
+            -i "$RUNNER_TEMP/part2-preview/preview_%02d.png" \
+            -vf 'scale=480:270:flags=lanczos,tile=3x2' -frames:v 1 \
+            -q:v 4 "$RUNNER_TEMP/part2-preview/camera-review.jpg"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Part2-20sec-six-3D-camera-previews
+          path: |
+            {{ runner.temp }}/part2-preview/camera-review.jpg
+            {{ runner.temp }}/part2-preview/preview_*.png
+            CartoonStudio/episodes/a_second_taj/extension_review/shots_part2.json
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Print compact visual contact sheet for inspection
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import base64, os
+          p=os.environ["RUNNER_TEMP"]+"/part2-preview/camera-review.jpg"
+          print("PART2_CONTACT_BASE64_START")
+          print(base64.b64encode(open(p,"rb").read()).decode())
+          print("PART2_CONTACT_BASE64_END")
+          PY
+
+      - name: Render only the 240 distinct Blender frames for seconds 20-40
+        working-directory: CartoonStudio/episodes/a_second_taj
+        shell: bash
+        run: |
+          "$RUNNER_TEMP/taj-blender-4.3.2/blender" --background --disable-autoexec extension_review/A_Second_Taj_Part2_20_to_40.blend \
+            --threads 4 --python-exit-code 1 --python extension_review/render_part2.py -- \
+            --mode final --output "$RUNNER_TEMP/part2-frames"
+
+      - name: Encode only the new 20-second film with revised captions and Bella dialogue
+        working-directory: CartoonStudio/episodes/a_second_taj
+        shell: bash
+        run: |
+          mkdir -p extension_review/final
+          cp next_20_seconds/English.srt "$RUNNER_TEMP/part2-frames/part2.srt"
+          ffmpeg -hide_banner -loglevel warning -y \
+            -framerate 12 -start_number 1 -i "$RUNNER_TEMP/part2-frames/frame_%04d.png" \
+            -i next_20_seconds/audio/Conversation.wav \
+            -filter_complex "[0:v]fps=24,scale=1280:720:flags=lanczos,setsar=1,subtitles=next_20_seconds/English.srt:force_style='FontName=DejaVu Sans,FontSize=32,PrimaryColour=&H00FFFFFF,OutlineColour=&H00181818,Outline=2,Shadow=0,MarginV=43'[v]" \
+            -map "[v]" -map "1:a:0" -t 20 \
+            -c:v libx264 -preset medium -crf 19 -pix_fmt yuv420p -r 24 \
+            -c:a aac -b:a 176k -ar 48000 -ac 2 -movflags +faststart \
+            -metadata title="A Second Taj - Part 2 (story seconds 20 to 40)" \
+            extension_review/final/A_Second_Taj_Part2_20_to_40.mp4
+        env:
+          # Subtitle filter looks in the frame rendering folder
+          AV_LOG_FORCE_NOCOLOR: '1'
+
+      - name: Verify media length and dialogue synchronization
+        working-directory: CartoonStudio/episodes/a_second_taj
+        run: python3 extension_review/verify_part2.py
+
+      - name: Upload review MP4 and source scene
+        uses: actions/upload-artifact@v4
+        with:
+          name: Part2-ONLY-20-Second-Animated-Clip
+          path: |
+            CartoonStudio/episodes/a_second_taj/extension_review/final/A_Second_Taj_Part2_20_to_40.mp4
+            CartoonStudio/episodes/a_second_taj/extension_review/A_Second_Taj_Part2_20_to_40.blend
+            CartoonStudio/episodes/a_second_taj/extension_review/shots_part2.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Push review video only to the PR branch (never main)
+        if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CartoonStudio/episodes/a_second_taj/extension_review/final/A_Second_Taj_Part2_20_to_40.mp4
+          if git diff --cached --quiet; then
+            echo "Review MP4 already up to date"
+          else
+            git commit -m "Add 20s-only Part 2 Blender animation preview for PR review"
+            git push origin "HEAD:refs/heads/fix/40s-genuine-animation-review"
+          fi
