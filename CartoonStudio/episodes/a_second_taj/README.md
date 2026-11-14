@@ -2,15 +2,6 @@
 
 A 20-second English conversation between Tara and Maya in the Taj Mahal gardens. Tara finds a second monument in the reflecting pool. Maya gets out her phone.
 
-## Watch or rebuild the film
-
-| Cut | Download | Editable source |
-| --- | --- | --- |
-| 40-second extended cut | [MP4](final/A_Second_Taj_40s.mp4?raw=true) · [English captions](extension_40s/English_40s.srt) | [Build the extended cut](extension_40s/) · [Edit the continuation dialogue](next_20_seconds/) |
-| Original 20-second cut | [MP4](final/A_Second_Taj.mp4?raw=true) · [English captions](English.srt) | [Blender scene](A_Second_Taj.blend?raw=true) |
-
-The second half uses a new edit of the original camera shots with a new conversation. Maya uses the Bella voice for the continuation. The Blender scene contains the original 480 frames.
-
 ## Open the scene
 
 Open **A_Second_Taj.blend** in the standard desktop release of Blender 4.3.2. Press **Numpad 0** to enter camera view if needed and **Space** to play. The scene contains eight camera shots, two animated characters, a moving water surface and a packed stereo soundtrack. The 24 fps timeline runs from frame 1 through 480. The supplied MP4 presents character motion on twos, with English captions and a final camera-shutter effect.
