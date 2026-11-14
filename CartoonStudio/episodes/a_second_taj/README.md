@@ -38,6 +38,12 @@ Use **Render → Render Animation** in Blender to make an H.264 movie from the c
 python finish_video.py path/to/blender-export.mp4 A_Second_Taj_Finished.mp4
 ```
 
+## Review the original export
+
+[Download the 20-second film](final/A_Second_Taj.mp4?raw=true). The **Check A Second Taj** workflow checks the published picture and its six voice cues against the original WAV, mouth timing and captions. Download **original-taj-camera-review** from the workflow run to see a frame with an active mouth from each line. Read the frames left to right, using the speaker names and timestamps in **speakers.txt** to review the camera choices. To run the same export check locally, install FFmpeg and run `python verify_export.py review` from this directory.
+
+The **Compare Blender cameras with the finished film** job opens the editable scene in Blender 4.3.2, checks its packed soundtrack, and renders one small preview per camera cut. Download **original-taj-blender-cameras** and open **camera-comparison.jpg**. Each row pairs the camera render with the same timestamp from the published film and names the active speaker or pause. Use it to judge the silhouettes, background detail, lighting and eyelines. The source column uses 40% resolution and includes the scene before titles and captions.
+
 ## Asset credits
 
 The source models retain their original terms. Tripo source pages are listed in the order Tara, Maya, garden.
