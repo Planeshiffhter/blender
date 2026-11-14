@@ -2,11 +2,11 @@
 
 This is the next **20 seconds of AUDIO** after the existing `A_Second_Taj.mp4`, continuing Tara and Maya's conversation just after Maya takes their picture. It deliberately does not replace Episode 1 or claim to contain an animated MP4.
 
-## Same voices and audio style
+## Improved two-voice audio
 
 - Tara: Kokoro ONNX `af_heart`, US English, speed 0.95
-- Maya: Kokoro ONNX `bf_emma`, UK English, speed 0.94
-- Shares the parent episode's exact `make_audio.py` implementation, verified Kokoro model/voice weights, stereo panning, outdoor ambience, shutter sound and timing format.
+- Maya: Kokoro ONNX `af_bella`, US English, speed 0.99 (upgraded from `bf_emma` for a clearer contrasting female voice; the British accent is not retained in this version)
+- Tara is intentionally unchanged. Episode 1 is untouched. Git history preserves the older Emma audio if you prefer it.\n- Shares the parent episode's exact `make_audio.py` implementation, verified Kokoro model/voice weights, stereo panning, outdoor ambience, shutter sound and timing format.
 - Deliverables generated: `audio/Conversation.wav` (20.000 sec, stereo, 24 kHz/16-bit PCM), `audio/timing.json` (mouth-curve animation data for Blender at 24 fps), and `English.srt`.
 
 ## Download

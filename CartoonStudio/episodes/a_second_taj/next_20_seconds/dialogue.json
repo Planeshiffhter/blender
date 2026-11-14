@@ -8,9 +8,9 @@
   },
   {
     "speaker": "Maya",
-    "voice": "bf_emma",
-    "language": "en-gb",
-    "speed": 0.94,
+    "voice": "af_bella",
+    "language": "en-us",
+    "speed": 0.99,
     "text": "Yes! It looks like a palace in the sky."
   },
   {
@@ -22,9 +22,9 @@
   },
   {
     "speaker": "Maya",
-    "voice": "bf_emma",
-    "language": "en-gb",
-    "speed": 0.94,
+    "voice": "af_bella",
+    "language": "en-us",
+    "speed": 0.99,
     "text": "I'd need a ladder just to reach my door."
   },
   {
@@ -36,9 +36,9 @@
   },
   {
     "speaker": "Maya",
-    "voice": "bf_emma",
-    "language": "en-gb",
-    "speed": 0.94,
+    "voice": "af_bella",
+    "language": "en-us",
+    "speed": 0.99,
     "text": "Ha! Come closer. One more picture, ready?"
   }
 ]
