@@ -1,0 +1,73 @@
+name: Build A Second Taj 40-second extended video
+on:
+  push:
+    paths:
+      - 'CartoonStudio/episodes/a_second_taj/extension_40s/build_40s.py'
+      - 'CartoonStudio/episodes/a_second_taj/final/A_Second_Taj.mp4'
+      - 'CartoonStudio/episodes/a_second_taj/next_20_seconds/audio/Conversation.wav'
+      - 'CartoonStudio/episodes/a_second_taj/next_20_seconds/audio/timing.json'
+      - '.github/workflows/build-40s.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  extend_video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout source and existing original MP4
+        uses: actions/checkout@v4
+
+      - name: Check FFmpeg capabilities
+        shell: bash
+        run: |
+          ffmpeg -version | head -n 3
+          ffmpeg -hide_banner -filters | grep subtitles
+          ffmpeg -hide_banner -encoders | grep libx264
+
+      - name: Extend original video to 40 seconds
+        run: python3 CartoonStudio/episodes/a_second_taj/extension_40s/build_40s.py
+
+      - name: Verify finished MP4 video and new subtitle track
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          root=Path('CartoonStudio/episodes/a_second_taj')
+          video=root/'final/A_Second_Taj_40s.mp4'
+          assert video.is_file() and video.stat().st_size>500_000
+          info=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_format','-show_streams','-of','json',str(video)],text=True))
+          duration=float(info['format']['duration'])
+          assert 39.7<=duration<=40.3, duration
+          types={s['codec_type'] for s in info['streams']}
+          assert 'video' in types and 'audio' in types, types
+          subs=(root/'extension_40s/English_40s.srt').read_text()
+          assert 'palace in the sky' in subs and 'second Taj Mahal' in subs
+          print('Verified', video, 'duration:', duration, 'size:', video.stat().st_size)
+          PY
+
+      - name: Upload downloadable 40-second MP4
+        uses: actions/upload-artifact@v4
+        with:
+          name: A-Second-Taj-40s-Extended-Video
+          path: |
+            CartoonStudio/episodes/a_second_taj/final/A_Second_Taj_40s.mp4
+            CartoonStudio/episodes/a_second_taj/extension_40s/English_40s.srt
+          if-no-files-found: error
+
+      - name: Commit the extended video and subtitles to main
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CartoonStudio/episodes/a_second_taj/final/A_Second_Taj_40s.mp4
+          git add CartoonStudio/episodes/a_second_taj/extension_40s/English_40s.srt
+          if git diff --cached --quiet; then
+            echo "40-second video already up to date."
+          else
+            git commit -m "Publish the 40-second extended A Second Taj MP4"
+            git push origin HEAD:main
+          fi
