@@ -56,3 +56,19 @@ target.write_text(json.dumps(allinfo,indent=2),encoding="utf-8")
 print("TAJ_SCENE_REPORT_START")
 print(json.dumps(allinfo,separators=(",",":"))[:28000])
 print("TAJ_SCENE_REPORT_END")
+
+
+# Detailed armature posing report to support original, non-recycled body acting.
+pose = {}
+for rig_name in ("Tara • source character rig", "Maya • gesture rig"):
+    obj=bpy.data.objects.get(rig_name)
+    if obj:
+        pose[rig_name]={
+          "bones":[{"name":b.name,"rotation_mode":b.rotation_mode,
+             "location":p(b.location),"rotation_quaternion":p(b.rotation_quaternion)} for b in obj.pose.bones],
+          "rig_action_paths":[{"path":fc.data_path,"index":fc.array_index,
+             "range":[round(float(fc.range()[0]),1),round(float(fc.range()[1]),1)]} for fc in obj.animation_data.action.fcurves] if obj.animation_data and obj.animation_data.action and hasattr(obj.animation_data.action,"fcurves") else [],
+        }
+print("TAJ_RIG_REPORT_START")
+print(json.dumps(pose,separators=(",",":"))[:48000])
+print("TAJ_RIG_REPORT_END")
