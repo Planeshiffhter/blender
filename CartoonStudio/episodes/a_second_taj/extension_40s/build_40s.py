@@ -146,7 +146,7 @@ def build() -> None:
             parts.append(
                 f"[raw{i}]trim=start={start:.3f}:duration={length:.3f},"
                 f"setpts=PTS-STARTPTS,fps=24,scale=1280:720:flags=lanczos,"
-                f"setsar=1,pix_fmt=yuv420p[s{i}]"
+                f"setsar=1,format=yuv420p[s{i}]"
             )
         montage = "".join(f"[s{i}]" for i in range(6))
         # Original MP4 already burns the Episode 1 subtitles into the image.
