@@ -30,8 +30,21 @@ jobs:
         run: |
           python -m compileall -q .
           python verify_handoff.py
-      - name: Check the movie duration and both streams
+      - name: Check both published movies
         run: |
           command -v ffprobe || (sudo apt-get update -qq && sudo apt-get install -y ffmpeg)
-          ffprobe -v error -show_streams -show_format -of json final/A_Second_Taj.mp4 > /tmp/taj-media.json
-          python -c "import json; p=json.load(open('/tmp/taj-media.json')); assert abs(float(p['format']['duration'])-20)<0.05; assert {s['codec_type'] for s in p['streams']} >= {'video','audio'}"
+          python - <<'PY'
+          import json
+          import subprocess
+
+          for name, seconds in [("A_Second_Taj.mp4", 20), ("A_Second_Taj_40s.mp4", 40)]:
+              path = f"final/{name}"
+              data = json.loads(subprocess.check_output([
+                  "ffprobe", "-v", "error", "-show_streams", "-of", "json", path,
+              ]))
+              for kind in ("video", "audio"):
+                  streams = [s for s in data["streams"] if s["codec_type"] == kind]
+                  if not streams or abs(float(streams[0]["duration"]) - seconds) > 0.15:
+                      raise SystemExit(f"{path}: expected a {seconds}-second {kind} stream")
+              print(f"{path}: verified {seconds}-second video and audio streams")
+          PY
