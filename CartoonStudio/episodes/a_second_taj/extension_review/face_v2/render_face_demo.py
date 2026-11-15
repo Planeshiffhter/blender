@@ -31,6 +31,13 @@ mouth=bpy.data.objects["Maya • mouth"].data.shape_keys.key_blocks
 if args.mode=="portraits":
     scene.cycles.samples=16
     scene.render.resolution_percentage=70
+    # Blender re-evaluates keyed values on each render. Disconnect only the
+    # TEMPORARY portrait process actions so preset shapes are actually visible.
+    # The saved demo .blend and its speaking animation remain untouched.
+    for obj_name in ("Maya • character","Maya • mouth"):
+        shape_keys = bpy.data.objects[obj_name].data.shape_keys
+        if shape_keys and shape_keys.animation_data:
+            shape_keys.animation_data_clear()
     presets={
        "01_neutral":{},
        "02_smile":{"CheekSmile":.72,"SmileCorners":.8,"BrowLiftLeft":.23,"BrowLiftRight":.21},

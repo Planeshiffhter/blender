@@ -79,6 +79,19 @@ jobs:
             -pattern_type glob -i "$RUNNER_TEMP/maya-expressions/*.png" \
             -vf 'scale=480:270:flags=lanczos,tile=3x2' -frames:v 1 -q:v 3 \
             extension_review/face_v2/previews/Maya_expression_contact.jpg
+      - name: Ensure six facial portrait images are visually distinct
+        shell: bash
+        run: |
+          hashes=()
+          for picture in "$RUNNER_TEMP"/maya-expressions/*.png; do
+            # Hash decoded pixels, not PNG metadata; identical renders used to slip through.
+            hash=$(ffmpeg -v error -i "$picture" -f rawvideo -pix_fmt rgb24 - | sha256sum | cut -d ' ' -f 1)
+            echo "$picture: $hash"
+            hashes+=("$hash")
+          done
+          distinct=$(printf "%s\n" "${hashes[@]}" | sort -u | wc -l)
+          [ "$distinct" -eq 6 ] || { echo "::error::Expression previews all look identical; fix pose evaluation"; exit 1; }
+
       - name: Upload early portrait evidence for visual review
         uses: actions/upload-artifact@v4
         with:

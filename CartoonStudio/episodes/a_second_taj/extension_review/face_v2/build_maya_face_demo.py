@@ -112,7 +112,7 @@ def facial_controls():
         def blink(pt, anchor=anchor):
             w = gaussian3(pt, anchor, (0.047, 0.07, 0.037))
             # Compress the surface vertically to close an eye without giant bulges.
-            dz = -0.70 * (pt.z - anchor.z) * w
+            dz = -1.02 * (pt.z - anchor.z) * w
             return Vector((0, 0, dz)), w
         add_body_shape("Blink" + side, blink, evaluated, base)
 
@@ -181,11 +181,11 @@ def facial_controls():
             for node in material.node_tree.nodes:
                 if node.type == "BSDF_PRINCIPLED":
                     if "Roughness" in node.inputs:
-                        node.inputs["Roughness"].default_value = 0.49
+                        node.inputs["Roughness"].default_value = 0.55
                     if "Subsurface Weight" in node.inputs:
-                        node.inputs["Subsurface Weight"].default_value = 0.07
+                        node.inputs["Subsurface Weight"].default_value = 0.035
                     if "Coat Weight" in node.inputs:
-                        node.inputs["Coat Weight"].default_value = 0.04
+                        node.inputs["Coat Weight"].default_value = 0.01
     REPORT["materials_preserved"] = original_mat.name if original_mat else None
     return center
 
@@ -250,6 +250,9 @@ def set_portrait_camera(target):
     cam.location=camera_pos
     cam.rotation_euler=(center-camera_pos).to_track_quat("-Z","Y").to_euler()
     camera_data.lens=57
+    camera_data.dof.use_dof=True
+    camera_data.dof.focus_distance=(camera_pos-center).length
+    camera_data.dof.aperture_fstop=3.4
     scene.timeline_markers.clear()
     scene.timeline_markers.new("Maya facial acting",frame=1).camera=cam
     scene.camera=cam
@@ -260,9 +263,9 @@ def lights():
     s=bpy.context.scene
     target=Vector((0.61,-0.20,1.62))
     for name,loc,energy,size,color in [
-      ("FaceV2 | soft key",Vector((-0.48,-1.4,2.45)),165,1.3,(1.0,.88,.79)),
-      ("FaceV2 | eye fill",Vector((1.3,-1.0,1.85)),90,0.9,(.82,.90,1.0)),
-      ("FaceV2 | hair rim",Vector((.9,.65,2.20)),125,1.0,(1.0,.87,.70))
+      ("FaceV2 | soft key",Vector((-0.48,-1.4,2.45)),24,1.3,(1.0,.92,.87)),
+      ("FaceV2 | eye fill",Vector((1.3,-1.0,1.85)),12,0.9,(.88,.94,1.0)),
+      ("FaceV2 | hair rim",Vector((.9,.65,2.20)),24,1.0,(1.0,.88,.76))
     ]:
         data=bpy.data.lights.new(name,"AREA")
         obj=bpy.data.objects.new(name,data)
@@ -295,6 +298,7 @@ def main():
     scene.render.image_settings.file_format="PNG"
     scene.render.filepath=str(ROOT/"frames"/"maya_face_")
     scene.view_settings.view_transform="AgX"
+    scene.view_settings.exposure=-0.24
     scene.frame_set(1)
     REPORT["camera"]=scene.camera.name
     REPORT["expression_keys"]=len(REPORT["new_body_shape_keys"])+len(REPORT["new_mouth_shape_keys"])
