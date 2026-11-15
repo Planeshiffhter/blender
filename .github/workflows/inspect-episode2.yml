@@ -1,0 +1,45 @@
+name: Inspect original Blender scene for 20-40s continuation
+on:
+  pull_request:
+    paths:
+      - 'CartoonStudio/episodes/a_second_taj/extension_review/inspect_scene.py'
+      - '.github/workflows/inspect-episode2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore Blender 4.3.2 from shared cache
+        id: blender-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/taj-blender-4.3.2
+          key: taj-blender-4.3.2-linux-x64-v1
+      - name: Download Blender if cache is cold
+        if: steps.blender-cache.outputs.cache-hit != 'true'
+        working-directory: ${{ runner.temp }}
+        run: |
+          release=https://download.blender.org/release/Blender4.3
+          archive=blender-4.3.2-linux-x64.tar.xz
+          curl --fail --location --retry 3 -o "$archive" "$release/$archive"
+          curl --fail --location --retry 3 -o blender.sha256 "$release/blender-4.3.2.sha256"
+          awk -v file="$archive" '$2 == file || $2 == "*"file' blender.sha256 > archive.sha256
+          sha256sum --check archive.sha256
+          mkdir -p taj-blender-4.3.2
+          tar -xJf "$archive" --strip-components=1 -C taj-blender-4.3.2
+      - name: Extract rig camera and animation details
+        working-directory: CartoonStudio/episodes/a_second_taj
+        run: |
+          "$RUNNER_TEMP/taj-blender-4.3.2/blender" --background --disable-autoexec A_Second_Taj.blend \
+            --threads 4 --python-exit-code 1 --python extension_review/inspect_scene.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Taj-Original-Scene-Report
+          path: CartoonStudio/episodes/a_second_taj/extension_review/scene_report.json
+          retention-days: 7

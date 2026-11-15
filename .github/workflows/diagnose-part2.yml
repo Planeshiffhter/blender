@@ -1,0 +1,44 @@
+name: Diagnose Part 2 audio and inspect six camera previews
+on:
+  push:
+    paths:
+      - 'CartoonStudio/episodes/a_second_taj/extension_review/diagnose_audio.py'
+      - '.github/workflows/diagnose-part2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg
+      - name: Diagnose AAC audio delay and waveform comparison
+        run: python3 CartoonStudio/episodes/a_second_taj/extension_review/diagnose_audio.py
+      - name: Recover six previously rendered camera previews
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 43613959074
+          name: Part2-20sec-six-3D-camera-previews
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/taj-recovered-preview
+      - name: Make camera review sheet accessible on PR
+        shell: bash
+        run: |
+          mkdir -p CartoonStudio/episodes/a_second_taj/extension_review/preview
+          find "$RUNNER_TEMP/taj-recovered-preview" -type f | head -n 20
+          cp "$(find "$RUNNER_TEMP/taj-recovered-preview" -name camera-review.jpg -print -quit)" CartoonStudio/episodes/a_second_taj/extension_review/preview/camera-review.jpg
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CartoonStudio/episodes/a_second_taj/extension_review/preview/camera-review.jpg
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish 6 camera preview frames for part-two visual review"
+            git push origin HEAD:fix/40s-genuine-animation-review
+          fi

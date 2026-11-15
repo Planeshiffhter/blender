@@ -1,0 +1,159 @@
+name: Maya cartoon face v2 - six expressions and 3.5s talking test
+on:
+  push:
+    branches:
+      - fix/40s-genuine-animation-review
+    paths:
+      - 'CartoonStudio/episodes/a_second_taj/extension_review/face_v2/build_maya_face_demo.py'
+      - 'CartoonStudio/episodes/a_second_taj/extension_review/face_v2/render_face_demo.py'
+      - 'CartoonStudio/episodes/a_second_taj/extension_review/face_v2/Face_Test.srt'
+      - '.github/workflows/maya-face-v2-demo.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: maya-face-v2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  demo:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: CartoonStudio/episodes/a_second_taj
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg fonts-dejavu-core
+      - name: Restore Blender 4.3.2 from cache
+        id: blender-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/taj-blender-4.3.2
+          key: taj-blender-4.3.2-linux-x64-v1
+      - name: Download and checksum-verify Blender if uncached
+        if: steps.blender-cache.outputs.cache-hit != 'true'
+        working-directory: ${{ runner.temp }}
+        run: |
+          release=https://download.blender.org/release/Blender4.3
+          archive=blender-4.3.2-linux-x64.tar.xz
+          curl --fail --location --retry 3 -o "$archive" "$release/$archive"
+          curl --fail --location --retry 3 -o blender.sha256 "$release/blender-4.3.2.sha256"
+          awk -v file="$archive" '$2 == file || $2 == "*"file' blender.sha256 > archive.sha256
+          sha256sum --check archive.sha256
+          mkdir -p taj-blender-4.3.2
+          tar -xJf "$archive" --strip-components=1 -C taj-blender-4.3.2
+      - name: Build non-destructive Maya face controls
+        run: |
+          "$RUNNER_TEMP/taj-blender-4.3.2/blender" --background --disable-autoexec A_Second_Taj.blend \
+            --threads 4 --python-exit-code 1 --python extension_review/face_v2/build_maya_face_demo.py
+      - name: Ensure new facial controls exist on actual model
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("extension_review/face_v2/face_rig_report.json")
+          report=json.loads(p.read_text(encoding="utf-8"))
+          assert len(report["new_body_shape_keys"])>=6
+          assert len(report["new_mouth_shape_keys"])>=4
+          for name, info in report["affected_vertices"].items():
+              assert info["count"]>=8, (name,info)
+          assert (p.parent/"Maya_Cartoon_Face_Test.blend").is_file()
+          print("Created actual Maya facial keys:", report["new_body_shape_keys"] + report["new_mouth_shape_keys"])
+          print("Affected mesh vertices:", report["affected_vertices"])
+          PY
+      - name: Render six facial expression portraits
+        run: |
+          "$RUNNER_TEMP/taj-blender-4.3.2/blender" --background --disable-autoexec extension_review/face_v2/Maya_Cartoon_Face_Test.blend \
+            --threads 4 --python-exit-code 1 --python extension_review/face_v2/render_face_demo.py -- \
+            --mode portraits --output "$RUNNER_TEMP/maya-expressions"
+          mkdir -p extension_review/face_v2/previews
+          ffmpeg -hide_banner -loglevel error -y -framerate 1 \
+            -pattern_type glob -i "$RUNNER_TEMP/maya-expressions/*.png" \
+            -vf 'scale=480:270:flags=lanczos,tile=3x2' -frames:v 1 -q:v 3 \
+            extension_review/face_v2/previews/Maya_expression_contact.jpg
+      - name: Ensure six facial portrait images are visually distinct
+        shell: bash
+        run: |
+          hashes=()
+          for picture in "$RUNNER_TEMP"/maya-expressions/*.png; do
+            # Hash decoded pixels, not PNG metadata; identical renders used to slip through.
+            hash=$(ffmpeg -v error -i "$picture" -f rawvideo -pix_fmt rgb24 - | sha256sum | cut -d ' ' -f 1)
+            echo "$picture: $hash"
+            hashes+=("$hash")
+          done
+          distinct=$(printf "%s\n" "${hashes[@]}" | sort -u | wc -l)
+          [ "$distinct" -eq 6 ] || { echo "::error::Expression previews all look identical; fix pose evaluation"; exit 1; }
+
+      - name: Upload early portrait evidence for visual review
+        uses: actions/upload-artifact@v4
+        with:
+          name: Maya-face-v2-six-expressions
+          path: |
+            ${{ runner.temp }}/maya-expressions/*.png
+            CartoonStudio/episodes/a_second_taj/extension_review/face_v2/previews/Maya_expression_contact.jpg
+          if-no-files-found: error
+          retention-days: 14
+      - name: Render 42 truly animated 3D portrait frames for Maya dialogue
+        run: |
+          "$RUNNER_TEMP/taj-blender-4.3.2/blender" --background --disable-autoexec extension_review/face_v2/Maya_Cartoon_Face_Test.blend \
+            --threads 4 --python-exit-code 1 --python extension_review/face_v2/render_face_demo.py -- \
+            --mode motion --output "$RUNNER_TEMP/maya-motion"
+      - name: Encode 3.5-second face test with original Kokoro dialogue
+        run: |
+          mkdir -p extension_review/face_v2/final
+          ffmpeg -hide_banner -loglevel warning -y \
+            -framerate 12 -start_number 1 -i "$RUNNER_TEMP/maya-motion/frame_%04d.png" \
+            -ss 3.5 -t 3.5 -i next_20_seconds/audio/Conversation.wav \
+            -vf "fps=24,scale=960:540:flags=lanczos,subtitles=extension_review/face_v2/Face_Test.srt:force_style='FontName=DejaVu Sans,FontSize=25,PrimaryColour=&H00FFFFFF,OutlineColour=&H00121212,Outline=2,Shadow=0,MarginV=22'" \
+            -map 0:v:0 -map 1:a:0 -t 3.5 \
+            -c:v libx264 -preset medium -crf 18 -pix_fmt yuv420p -r 24 \
+            -c:a aac -b:a 176k -ar 48000 -ac 2 -movflags +faststart \
+            extension_review/face_v2/final/Maya_Face_Demo_3_5s.mp4
+      - name: Verify video timing and voices
+        run: |
+          python3 - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          p=Path("extension_review/face_v2/final/Maya_Face_Demo_3_5s.mp4")
+          assert p.stat().st_size>130000
+          meta=json.loads(subprocess.check_output(["ffprobe","-v","error","-show_format","-show_streams","-of","json",str(p)],text=True))
+          v=next(s for s in meta["streams"] if s["codec_type"]=="video")
+          a=next(s for s in meta["streams"] if s["codec_type"]=="audio")
+          assert abs(float(meta["format"]["duration"])-3.5)<0.15,meta["format"]["duration"]
+          assert v["width"]==960 and v["height"]==540
+          assert int(v["nb_frames"])==84, v.get("nb_frames")
+          assert abs(float(a["duration"])-3.5)<.15
+          print("PASS: Maya 3.5s sample, 84 frames, 24fps, synchronized audio segment")
+          PY
+      - name: Upload face rig source and video test
+        uses: actions/upload-artifact@v4
+        with:
+          name: Maya-face-v2-source-and-3point5s-video
+          path: |
+            CartoonStudio/episodes/a_second_taj/extension_review/face_v2/Maya_Cartoon_Face_Test.blend
+            CartoonStudio/episodes/a_second_taj/extension_review/face_v2/face_rig_report.json
+            CartoonStudio/episodes/a_second_taj/extension_review/face_v2/previews/Maya_expression_contact.jpg
+            CartoonStudio/episodes/a_second_taj/extension_review/face_v2/final/Maya_Face_Demo_3_5s.mp4
+          if-no-files-found: error
+          retention-days: 30
+      - name: Commit Maya facial demo only to draft PR branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add extension_review/face_v2/Maya_Cartoon_Face_Test.blend
+          git add extension_review/face_v2/face_rig_report.json
+          git add extension_review/face_v2/previews/Maya_expression_contact.jpg
+          git add extension_review/face_v2/final/Maya_Face_Demo_3_5s.mp4
+          if ! git diff --cached --quiet; then
+            git commit -m "Add Maya enhanced face blend, six expression previews and short video"
+            git push origin HEAD:fix/40s-genuine-animation-review
+          fi

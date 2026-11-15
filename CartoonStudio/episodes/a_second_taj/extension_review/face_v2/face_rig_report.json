@@ -1,0 +1,68 @@
+{
+  "method": "real existing mesh shape keys; no replacement geometry",
+  "character": "Maya \u2022 character",
+  "mouth": "Maya \u2022 mouth",
+  "new_body_shape_keys": [
+    "BlinkLeft",
+    "BrowLiftLeft",
+    "BlinkRight",
+    "BrowLiftRight",
+    "EyesWide",
+    "CheekSmile"
+  ],
+  "new_mouth_shape_keys": [
+    "VisemeWide_E",
+    "VisemeRound_O",
+    "SmileCorners",
+    "VisemeClosed_MBP"
+  ],
+  "affected_vertices": {
+    "BlinkLeft": {
+      "count": 350,
+      "total_displacement": 1.9834
+    },
+    "BrowLiftLeft": {
+      "count": 164,
+      "total_displacement": 0.5266
+    },
+    "BlinkRight": {
+      "count": 420,
+      "total_displacement": 2.7277
+    },
+    "BrowLiftRight": {
+      "count": 245,
+      "total_displacement": 0.914
+    },
+    "EyesWide": {
+      "count": 684,
+      "total_displacement": 1.1187
+    },
+    "CheekSmile": {
+      "count": 750,
+      "total_displacement": 1.9718
+    }
+  },
+  "scene_frames": 84,
+  "fps": 24,
+  "audio_offset": 3.5,
+  "mouth_anchor": [
+    0.5955,
+    -0.2046,
+    1.5355
+  ],
+  "eye_anchors": [
+    [
+      0.5375,
+      -0.2226,
+      1.6395
+    ],
+    [
+      0.6535,
+      -0.2226,
+      1.6395
+    ]
+  ],
+  "materials_preserved": "Maya \u2022 character \u2022 surface",
+  "camera": "Maya closeup | expressive face",
+  "expression_keys": 10
+}

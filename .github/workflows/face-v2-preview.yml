@@ -1,0 +1,53 @@
+name: Cartoon facial expression rig review
+on:
+  pull_request:
+    paths:
+      - 'CartoonStudio/episodes/a_second_taj/extension_review/face_v2/**'
+      - '.github/workflows/face-v2-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cartoon-face-preview-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit_and_preview:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 1
+      - name: Use cached Blender 4.3.2
+        id: blender-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/taj-blender-4.3.2
+          key: taj-blender-4.3.2-linux-x64-v1
+      - name: Download verified Blender 4.3.2 if cache missing
+        if: steps.blender-cache.outputs.cache-hit != 'true'
+        working-directory: ${{ runner.temp }}
+        run: |
+          release=https://download.blender.org/release/Blender4.3
+          archive=blender-4.3.2-linux-x64.tar.xz
+          curl --fail --location --retry 3 -o "$archive" "$release/$archive"
+          curl --fail --location --retry 3 -o blender.sha256 "$release/blender-4.3.2.sha256"
+          awk -v file="$archive" '$2 == file || $2 == "*"file' blender.sha256 > archive.sha256
+          sha256sum --check archive.sha256
+          mkdir -p taj-blender-4.3.2
+          tar -xJf "$archive" --strip-components=1 -C taj-blender-4.3.2
+      - name: Audit existing Maya and Tara geometry and facial materials
+        working-directory: CartoonStudio/episodes/a_second_taj
+        run: |
+          "$RUNNER_TEMP/taj-blender-4.3.2/blender" --background --disable-autoexec A_Second_Taj.blend \
+            --threads 4 --python-exit-code 1 --python extension_review/face_v2/inspect_face.py
+      - name: Upload face audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: Taj-face-materials-and-geometry-audit
+          path: CartoonStudio/episodes/a_second_taj/extension_review/face_v2/face_audit.json
+          if-no-files-found: error
