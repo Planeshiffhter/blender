@@ -19,7 +19,7 @@
   "affected_vertices": {
     "BlinkLeft": {
       "count": 350,
-      "total_displacement": 1.3612
+      "total_displacement": 1.9834
     },
     "BrowLiftLeft": {
       "count": 164,
@@ -27,7 +27,7 @@
     },
     "BlinkRight": {
       "count": 420,
-      "total_displacement": 1.872
+      "total_displacement": 2.7277
     },
     "BrowLiftRight": {
       "count": 245,
