@@ -1,11 +1,7 @@
 name: Render real Blender Part 2 clip (story seconds 20-40 ONLY)
+# Full 20-second Cycles renders are expensive and should run only
+# when deliberately requested after facial preview approval.
 on:
-  pull_request:
-    paths:
-      - 'CartoonStudio/episodes/a_second_taj/extension_review/make_part2.py'
-      - 'CartoonStudio/episodes/a_second_taj/extension_review/render_part2.py'
-      - 'CartoonStudio/episodes/a_second_taj/extension_review/verify_part2.py'
-      - '.github/workflows/render-part2-20s.yml'
   workflow_dispatch:
 
 permissions:
